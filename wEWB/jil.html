@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joshua Ivan Latag - Student Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            line-height: 1.6;
+            color: #e4e6ea;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .card {
+            background: rgba(30, 30, 46, 0.95);
+            backdrop-filter: blur(20px);
+            max-width: 550px;
+            width: 100%;
+            padding: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            transform: translateY(0);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #64ffda, #3f51b5, #9c27b0);
+            background-size: 200% 100%;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            display: block;
+            border: 4px solid rgba(100, 255, 218, 0.3);
+            object-fit: cover;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(100, 255, 218, 0.3);
+        }
+
+        .profile-pic:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 15px 40px rgba(100, 255, 218, 0.5);
+            border-color: #64ffda;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid rgba(100, 255, 218, 0.2);
+            padding-bottom: 25px;
+        }
+
+        .name {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #64ffda, #3f51b5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .tagline {
+            font-size: 1rem;
+            color: #b0bec5;
+            font-weight: 400;
+            font-style: italic;
+            opacity: 0.8;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section {
+            margin-bottom: 35px;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #e4e6ea;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.95rem;
+            position: relative;
+            padding-bottom: 8px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(90deg, #64ffda, #3f51b5);
+            border-radius: 2px;
+        }
+
+        .about-text {
+            color: #b0bec5;
+            font-size: 1rem;
+            text-align: justify;
+            margin-bottom: 0;
+            line-height: 1.7;
+        }
+
+        .section ul {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .section li {
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            color: #b0bec5;
+            padding-left: 20px;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .section li:hover {
+            color: #e4e6ea;
+            transform: translateX(5px);
+        }
+
+        .section li:before {
+            content: "▶";
+            position: absolute;
+            left: 0;
+            color: #64ffda;
+            font-size: 0.8rem;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .skills-list li {
+            display: inline-block;
+            background: linear-gradient(135deg, #64ffda, #3f51b5);
+            color: #1a1a2e;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-right: 0;
+            margin-bottom: 0;
+            padding-left: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(100, 255, 218, 0.3);
+        }
+
+        .skills-list li:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(100, 255, 218, 0.4);
+            background: linear-gradient(135deg, #3f51b5, #64ffda);
+        }
+
+        .skills-list li:before {
+            content: none;
+        }
+
+        .experience-item {
+            margin-bottom: 25px;
+            padding: 25px;
+            background: rgba(40, 40, 58, 0.8);
+            border-radius: 15px;
+            border-left: 5px solid #64ffda;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .experience-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            background: rgba(40, 40, 58, 0.95);
+        }
+
+        .job-title {
+            font-weight: 700;
+            color: #e4e6ea;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .company-date {
+            color: #90a4ae;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            font-style: italic;
+            font-weight: 500;
+        }
+
+        .job-description li {
+            font-size: 0.95rem;
+            color: #b0bec5;
+            line-height: 1.6;
+        }
+
+        .contact-info {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .contact-item {
+            color: #b0bec5;
+            text-decoration: none;
+            font-size: 1rem;
+            display: block;
+            margin-bottom: 10px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .contact-item:hover {
+            color: #64ffda;
+            transform: scale(1.02);
+        }
+
+        .social-links {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .social-link {
+            color: #90a4ae;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin: 0 20px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .social-link:hover {
+            color: #64ffda;
+            transform: translateY(-2px);
+        }
+
+        .social-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            background: #64ffda;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .social-link:hover::after {
+            width: 100%;
+        }
+
+        .contact-button {
+            display: block;
+            width: 220px;
+            margin: 0 auto;
+            padding: 16px 32px;
+            background: linear-gradient(135deg, #64ffda, #3f51b5);
+            color: #1a1a2e;
+            text-decoration: none;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            letter-spacing: 1px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(100, 255, 218, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .contact-button:hover::before {
+            left: 100%;
+        }
+
+        .contact-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(100, 255, 218, 0.5);
+            background: linear-gradient(135deg, #3f51b5, #64ffda);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            .card {
+                padding: 35px;
+            }
+            
+            .name {
+                font-size: 1.7rem;
+            }
+            
+            .profile-pic {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .social-link {
+                display: block;
+                margin: 8px 0;
+            }
+            
+            .contact-button {
+                width: 100%;
+            }
+
+            .skills-list {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 25px;
+            }
+            
+            .name {
+                font-size: 1.5rem;
+            }
+            
+            .section-title {
+                font-size: 0.9rem;
+            }
+
+            .profile-pic {
+                width: 90px;
+                height: 90px;
+            }
+        }
+
+        @keyframes profileLoad {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .profile-pic {
+            animation: profileLoad 0.8s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <img src="jos.jpg" alt="Joshua Ivan Latag Profile Picture" class="profile-pic">
+        
+        <div class="header">
+            <h1 class="name">Joshua Ivan Latag</h1>
+            <p class="tagline">Third Year BSIT Student</p>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">About Me</h2>
+            <p class="about-text">
+                Dedicated Information Technology student with good academic performance and practical 
+                experience in web application development. Passionate about web technologies and database management 
+                systems, with a focus on creating innovative solutions. Seeking opportunities to apply technical skills 
+                in professional environments and contribute to cutting-edge projects that make a difference.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Education</h2>
+            <ul>
+                <li>Bachelor of Science in Information Technology, University of Batangas, Expected 2026</li>
+                <li>Senior High School Graduate, The Nazareth School, 2020-2022</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Technical Skills</h2>
+            <ul class="skills-list">
+                <li>HTML/CSS</li>
+                <li>JavaScript</li>
+                <li>C++</li>
+                <li>MySQL</li>
+                <li>PHP</li>
+                <li>Java</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Experience</h2>
+            
+            <div class="experience-item">
+                <div class="job-title">Academic Projects</div>
+                <div class="company-date">University Coursework, 2022–Present</div>
+                <ul class="job-description">
+                    <li>Developed water delivery ordering system using PHP, JavaScript, and phpMyAdmin</li>
+                    <li>Created barangay mobile application with Java, PHP, and phpMyAdmin</li>
+                    <li>Built backend for Hotel Reservation System using HTML, JavaScript, PHP, and phpMyAdmin</li>
+                </ul>
+            </div>
+
+            <div class="experience-item">
+                <div class="job-title">Certifications & Recognition</div>
+                <div class="company-date">2022-Present</div>
+                <ul class="job-description">
+                    <li>Campus Devcon Certificate of Participation</li>
+                    <li>Codechum National Programming Challenge 2024 - Certificate of Participation</li>
+                    <li>Tech Nexus Certificate of Recognition</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Contact Information</h2>
+            
+            <div class="contact-info">
+                <a href="mailto:latagjoshuaivan@gmail.com" class="contact-item">latagjoshuaivan@gmail.com</a>
+                <a href="tel:+639154788771" class="contact-item">+639154788771</a>
+            </div>
+
+            <div class="social-links">
+                <a href="https://github.com/LatagJoshua" class="social-link" target="_blank">GitHub</a>
+            </div>
+
+            <a href="https://github.com/LatagJoshua" class="contact-button" target="_blank">Contact Me</a>
+        </div>
+    </div>
+</body>
+</html>
