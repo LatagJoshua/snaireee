@@ -112,5 +112,15 @@
             </div>
         </div>
     </div>
+    <script type="module">
+        import { auth } from './firebase-init.js';
+        import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js';
+
+        onAuthStateChanged(auth, function(user) {
+            if (!user) {
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
 </body>
 </html>

@@ -1,11 +1,33 @@
+import { auth } from './firebase-init.js';
+import { signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
 document.addEventListener('DOMContentLoaded', function () {
     var form = document.getElementById('loginForm');
     if (form) {
-        form.addEventListener('submit', function (e) {
+        form.addEventListener('submit', async function (e) {
             e.preventDefault();
-            window.location.href = 'home.html';
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                window.location.href = 'home.html';
+            } catch (err) {
+                var msg = document.getElementById('message');
+                if (msg) {
+                    msg.textContent = err.message || 'Login failed';
+                    msg.classList.remove('hidden');
+                } else {
+                    alert(err.message || 'Login failed');
+                }
+            }
         });
     }
+
+    onAuthStateChanged(auth, function(user){
+        if (user) {
+            // Already signed in, optionally redirect
+        }
+    });
 
     document.querySelectorAll('.password-toggle').forEach(function (toggle) {
         var container = toggle.closest('.input-container');

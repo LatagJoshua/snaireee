@@ -423,16 +423,16 @@
 </head>
 <body>
     <div class="card">
-        <img src="jos.jpg" alt="Joshua Ivan Latag Profile Picture" class="profile-pic">
+        <img src="jos.jpg" alt="Joshua Ivan Latag Profile Picture" class="profile-pic" id="profile-avatar">
         
         <div class="header">
-            <h1 class="name">Joshua Ivan Latag</h1>
-            <p class="tagline">Third Year BSIT Student</p>
+            <h1 class="name" id="profile-name">Joshua Ivan Latag</h1>
+            <p class="tagline" id="profile-title">Third Year BSIT Student</p>
         </div>
 
         <div class="section">
             <h2 class="section-title">About Me</h2>
-            <p class="about-text">
+            <p class="about-text" id="profile-about">
                 Dedicated Information Technology student with good academic performance and practical 
                 experience in web application development. Passionate about web technologies and database management 
                 systems, with a focus on creating innovative solutions. Seeking opportunities to apply technical skills 
@@ -496,8 +496,66 @@
                 <a href="https://github.com/LatagJoshua" class="social-link" target="_blank">GitHub</a>
             </div>
 
-            <a href="https://github.com/LatagJoshua" class="contact-button" target="_blank">Contact Me</a>
+            <form id="leadForm" style="margin-top: 16px;">
+                <input type="text" id="leadName" placeholder="Your name" required style="width:100%;padding:10px;margin-bottom:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:rgba(30,30,46,0.6);color:#e4e6ea;">
+                <input type="email" id="leadEmail" placeholder="Your email" required style="width:100%;padding:10px;margin-bottom:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:rgba(30,30,46,0.6);color:#e4e6ea;">
+                <textarea id="leadMessage" placeholder="Your message" required rows="4" style="width:100%;padding:10px;margin-bottom:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:rgba(30,30,46,0.6);color:#e4e6ea;"></textarea>
+                <button type="submit" class="contact-button" style="width:100%">Send Inquiry</button>
+                <div id="leadStatus" style="margin-top:8px;font-size:0.9rem;text-align:center;"></div>
+            </form>
         </div>
     </div>
+    <script type="module">
+        import { db } from './firebase-init.js';
+        import { ref, get, push, set } from 'https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js';
+
+        const username = 'jil';
+
+        async function loadProfile() {
+            try {
+                const snap = await get(ref(db, 'profiles/' + username));
+                if (snap.exists()) {
+                    const p = snap.val();
+                    const nameEl = document.getElementById('profile-name');
+                    const titleEl = document.getElementById('profile-title');
+                    const aboutEl = document.getElementById('profile-about');
+                    const avatarEl = document.getElementById('profile-avatar');
+                    if (p.name && nameEl) nameEl.textContent = p.name;
+                    if (p.title && titleEl) titleEl.textContent = p.title;
+                    if (p.about && aboutEl) aboutEl.textContent = p.about;
+                    if (p.avatarUrl && avatarEl) avatarEl.src = p.avatarUrl;
+                }
+            } catch (e) {
+                console.error('Failed to load profile', e);
+            }
+        }
+
+        async function handleLeadSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('leadName').value.trim();
+            const email = document.getElementById('leadEmail').value.trim();
+            const message = document.getElementById('leadMessage').value.trim();
+            const status = document.getElementById('leadStatus');
+            try {
+                const newRef = push(ref(db, 'leads'));
+                await set(newRef, {
+                    name: name,
+                    email: email,
+                    message: message,
+                    targetUsername: username,
+                    createdAt: new Date().toISOString()
+                });
+                status.textContent = 'Thanks! Your inquiry was sent.';
+                status.style.color = '#64ffda';
+                e.target.reset();
+            } catch (err) {
+                status.textContent = err.message || 'Failed to send. Please try again.';
+                status.style.color = '#ff6b6b';
+            }
+        }
+
+        document.getElementById('leadForm').addEventListener('submit', handleLeadSubmit);
+        loadProfile();
+    </script>
 </body>
 </html>
