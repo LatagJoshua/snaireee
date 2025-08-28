@@ -88,6 +88,7 @@
             letter-spacing: 1px;
         }
     </style>
+    <meta http-equiv="Cache-Control" content="no-store" />
 </head>
 <body>
     <div class="home-wrap">
@@ -118,7 +119,7 @@
 
         onAuthStateChanged(auth, function(user) {
             if (!user) {
-                window.location.href = 'login.html';
+                window.location.replace('login.html');
             }
         });
     </script>
